@@ -40,8 +40,8 @@
                 <!-- 单个文件最大 50MB -->
                 <SizeBasedTriggeringPolicy size="50MB" />
             </Policies>
-            <!-- 默认滚动策略：按天+大小双维度，保留 10 天 -->
-            <DefaultRolloverStrategy max="10">
+            <!-- 默认滚动策略：按天+大小双维度，保留 7 天 -->
+            <DefaultRolloverStrategy max="7">
                 <Delete basePath="${LOG_PATH}" maxDepth="1">
                     <IfFileName glob="${APP_NAME}-info.*.log.gz" />
                     <IfLastModified age="30d" />
@@ -65,7 +65,7 @@
                 <SizeBasedTriggeringPolicy size="50MB" />
             </Policies>
             <!-- 默认滚动策略：按天+大小双维度，保留 30 天 -->
-            <DefaultRolloverStrategy max="30">
+            <DefaultRolloverStrategy max="7">
                 <Delete basePath="${LOG_PATH}" maxDepth="1">
                     <IfFileName glob="${APP_NAME}-error.*.log.gz" />
                     <IfLastModified age="30d" />
