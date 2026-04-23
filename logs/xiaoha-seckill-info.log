@@ -1,0 +1,183 @@
+2026-04-14 16:00:00.835 INFO  [main] c.l.s.a.SeckillApplication : Starting SeckillApplication using Java 21.0.10 with PID 8724 (D:\WorkSpace\IdeaWorkSpace\lifang-seckill\lifang-seckill-app\target\classes started by SXCRCJ in D:\WorkSpace\IdeaWorkSpace\lifang-seckill)
+2026-04-14 16:00:00.838 INFO  [main] c.l.s.a.SeckillApplication : The following 1 profile is active: "dev"
+2026-04-14 16:00:03.384 INFO  [main] o.s.b.w.e.t.TomcatWebServer : Tomcat initialized with port 8080 (http)
+2026-04-14 16:00:03.439 INFO  [main] o.a.c.h.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-8080"]
+2026-04-14 16:00:03.447 INFO  [main] o.a.c.c.StandardService : Starting service [Tomcat]
+2026-04-14 16:00:03.449 INFO  [main] o.a.c.c.StandardEngine : Starting Servlet engine: [Apache Tomcat/10.1.49]
+2026-04-14 16:00:03.596 INFO  [main] o.a.c.c.C.[.[.[/] : Initializing Spring embedded WebApplicationContext
+2026-04-14 16:00:03.597 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2682 ms
+2026-04-14 16:00:05.794 INFO  [main] o.a.c.h.Http11NioProtocol : Starting ProtocolHandler ["http-nio-8080"]
+2026-04-14 16:00:05.843 INFO  [main] o.s.b.w.e.t.TomcatWebServer : Tomcat started on port 8080 (http) with context path '/'
+2026-04-14 16:00:05.859 INFO  [main] c.l.s.a.SeckillApplication : Started SeckillApplication in 6.777 seconds (process running for 8.687)
+2026-04-14 16:00:15.939 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-14 16:00:15.940 INFO  [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2026-04-14 16:00:15.941 INFO  [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet : Completed initialization in 1 ms
+2026-04-14 16:00:16.048 INFO  [http-nio-8080-exec-1] c.l.s.c.a.ApiOperationLogAspect : ====== 请求开始: [测试公共返参], 入参: "cgiOm6FZ", 请求类: TestController, 请求方法: testResponse =================================== 
+2026-04-14 16:00:16.081 INFO  [http-nio-8080-exec-1] c.l.s.c.a.ApiOperationLogAspect : ====== 请求结束: [测试公共返参], 耗时: 25ms, 出参: {"success":true,"message":null,"errorCode":null,"data":"Hello, cgiOm6FZ !"} =================================== 
+2026-04-14 16:00:34.435 INFO  [SpringApplicationShutdownHook] o.s.b.w.e.t.GracefulShutdown : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-14 16:00:34.444 INFO  [tomcat-shutdown] o.s.b.w.e.t.GracefulShutdown : Graceful shutdown complete
+2026-04-14 16:13:56.298 INFO  [background-preinit] o.h.v.i.u.Version : HV000001: Hibernate Validator 8.0.3.Final
+2026-04-14 16:13:56.383 INFO  [main] c.l.s.a.SeckillApplication : Starting SeckillApplication using Java 21.0.10 with PID 13452 (D:\WorkSpace\IdeaWorkSpace\lifang-seckill\lifang-seckill-app\target\classes started by SXCRCJ in D:\WorkSpace\IdeaWorkSpace\lifang-seckill)
+2026-04-14 16:13:56.385 INFO  [main] c.l.s.a.SeckillApplication : The following 1 profile is active: "dev"
+2026-04-14 16:13:58.812 INFO  [main] o.s.b.w.e.t.TomcatWebServer : Tomcat initialized with port 8080 (http)
+2026-04-14 16:13:58.835 INFO  [main] o.a.c.h.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-8080"]
+2026-04-14 16:13:58.839 INFO  [main] o.a.c.c.StandardService : Starting service [Tomcat]
+2026-04-14 16:13:58.839 INFO  [main] o.a.c.c.StandardEngine : Starting Servlet engine: [Apache Tomcat/10.1.49]
+2026-04-14 16:13:58.910 INFO  [main] o.a.c.c.C.[.[.[/] : Initializing Spring embedded WebApplicationContext
+2026-04-14 16:13:58.910 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2424 ms
+2026-04-14 16:14:00.288 INFO  [main] o.a.c.h.Http11NioProtocol : Starting ProtocolHandler ["http-nio-8080"]
+2026-04-14 16:14:00.314 INFO  [main] o.s.b.w.e.t.TomcatWebServer : Tomcat started on port 8080 (http) with context path '/'
+2026-04-14 16:14:00.326 INFO  [main] c.l.s.a.SeckillApplication : Started SeckillApplication in 5.556 seconds (process running for 8.118)
+2026-04-14 16:14:24.203 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-14 16:14:24.203 INFO  [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2026-04-14 16:14:24.204 INFO  [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet : Completed initialization in 1 ms
+2026-04-14 16:14:24.445 INFO  [http-nio-8080-exec-1] c.l.s.c.a.ApiOperationLogAspect : ====== 请求开始: [用户注册], 入参: {"mobile":"15149845307","password":"123456","verifyCode":"123456"}, 请求类: UserController, 请求方法: register =================================== 
+2026-04-14 16:14:24.473 INFO  [http-nio-8080-exec-1] c.z.h.HikariDataSource : SeckillHikariPool - Starting...
+2026-04-14 16:14:24.825 INFO  [http-nio-8080-exec-1] c.z.h.p.HikariPool : SeckillHikariPool - Added connection com.mysql.cj.jdbc.ConnectionImpl@30d6b757
+2026-04-14 16:14:24.829 INFO  [http-nio-8080-exec-1] c.z.h.HikariDataSource : SeckillHikariPool - Start completed.
+2026-04-14 16:14:24.990 WARN  [http-nio-8080-exec-1] c.l.s.c.e.GloBalExceptionHandler : /user/register request fail, errorCode: 20001, errorMessage: 该手机号已注册
+2026-04-14 16:14:48.346 INFO  [http-nio-8080-exec-2] c.l.s.c.a.ApiOperationLogAspect : ====== 请求开始: [用户注册], 入参: {"mobile":"13394868288","password":"123456","verifyCode":"123456"}, 请求类: UserController, 请求方法: register =================================== 
+2026-04-14 16:14:48.525 INFO  [http-nio-8080-exec-2] c.l.s.u.s.i.UserServiceImpl : ==> 用户注册成功, mobile: 13394868288
+2026-04-14 16:14:48.526 INFO  [http-nio-8080-exec-2] c.l.s.c.a.ApiOperationLogAspect : ====== 请求结束: [用户注册], 耗时: 179ms, 出参: {"success":true,"message":null,"errorCode":null,"data":null} =================================== 
+2026-04-14 16:15:34.545 INFO  [SpringApplicationShutdownHook] o.s.b.w.e.t.GracefulShutdown : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-14 16:15:34.555 INFO  [tomcat-shutdown] o.s.b.w.e.t.GracefulShutdown : Graceful shutdown complete
+2026-04-14 16:15:34.566 INFO  [SpringApplicationShutdownHook] c.z.h.HikariDataSource : SeckillHikariPool - Shutdown initiated...
+2026-04-14 16:15:34.585 INFO  [SpringApplicationShutdownHook] c.z.h.HikariDataSource : SeckillHikariPool - Shutdown completed.
+2026-04-14 16:32:28.819 INFO  [background-preinit] o.h.v.i.u.Version : HV000001: Hibernate Validator 8.0.3.Final
+2026-04-14 16:32:28.903 INFO  [main] c.l.s.a.SeckillApplication : Starting SeckillApplication using Java 21.0.10 with PID 22608 (D:\WorkSpace\IdeaWorkSpace\lifang-seckill\lifang-seckill-app\target\classes started by SXCRCJ in D:\WorkSpace\IdeaWorkSpace\lifang-seckill)
+2026-04-14 16:32:28.905 INFO  [main] c.l.s.a.SeckillApplication : The following 1 profile is active: "dev"
+2026-04-14 16:32:31.012 INFO  [main] o.s.b.w.e.t.TomcatWebServer : Tomcat initialized with port 8080 (http)
+2026-04-14 16:32:31.039 INFO  [main] o.a.c.h.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-8080"]
+2026-04-14 16:32:31.041 INFO  [main] o.a.c.c.StandardService : Starting service [Tomcat]
+2026-04-14 16:32:31.041 INFO  [main] o.a.c.c.StandardEngine : Starting Servlet engine: [Apache Tomcat/10.1.49]
+2026-04-14 16:32:31.107 INFO  [main] o.a.c.c.C.[.[.[/] : Initializing Spring embedded WebApplicationContext
+2026-04-14 16:32:31.107 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2114 ms
+2026-04-14 16:32:32.179 INFO  [main] o.a.c.h.Http11NioProtocol : Starting ProtocolHandler ["http-nio-8080"]
+2026-04-14 16:32:32.201 INFO  [main] o.s.b.w.e.t.TomcatWebServer : Tomcat started on port 8080 (http) with context path '/'
+2026-04-14 16:32:32.210 INFO  [main] c.l.s.a.SeckillApplication : Started SeckillApplication in 4.435 seconds (process running for 7.281)
+2026-04-14 16:33:22.792 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-14 16:33:22.792 INFO  [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2026-04-14 16:33:22.799 INFO  [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet : Completed initialization in 7 ms
+2026-04-14 16:33:23.305 INFO  [http-nio-8080-exec-1] c.l.s.c.a.ApiOperationLogAspect : ====== 请求开始: [用户登录], 入参: {"mobile":"15149845307","type":1,"password":"123456","verifyCode":null}, 请求类: UserController, 请求方法: login =================================== 
+2026-04-14 16:33:23.315 ERROR [http-nio-8080-exec-1] c.l.s.c.e.GloBalExceptionHandler : /user/login request error, 
+org.apache.ibatis.binding.BindingException: Invalid bound statement (not found): com.lqf.seckill.common.domain.mapper.UserDOMapper.selectByMobile
+	at org.apache.ibatis.binding.MapperMethod$SqlCommand.<init>(MapperMethod.java:229) ~[mybatis-3.5.19.jar:3.5.19]
+	at org.apache.ibatis.binding.MapperMethod.<init>(MapperMethod.java:53) ~[mybatis-3.5.19.jar:3.5.19]
+	at org.apache.ibatis.binding.MapperProxy.lambda$cachedInvoker$0(MapperProxy.java:96) ~[mybatis-3.5.19.jar:3.5.19]
+	at java.base/java.util.concurrent.ConcurrentHashMap.computeIfAbsent(ConcurrentHashMap.java:1708) ~[?:?]
+	at org.apache.ibatis.util.MapUtil.computeIfAbsent(MapUtil.java:36) ~[mybatis-3.5.19.jar:3.5.19]
+	at org.apache.ibatis.binding.MapperProxy.cachedInvoker(MapperProxy.java:94) ~[mybatis-3.5.19.jar:3.5.19]
+	at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:86) ~[mybatis-3.5.19.jar:3.5.19]
+	at jdk.proxy2/jdk.proxy2.$Proxy89.selectByMobile(Unknown Source) ~[?:?]
+	at com.lqf.seckill.user.service.impl.UserServiceImpl.login(UserServiceImpl.java:80) ~[classes/:?]
+	at com.lqf.seckill.user.controller.UserController.login(UserController.java:40) ~[classes/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.14.jar:6.2.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.2.14.jar:6.2.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.2.14.jar:6.2.14]
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89) ~[spring-aop-6.2.14.jar:6.2.14]
+	at com.lqf.seckill.common.aspect.ApiOperationLogAspect.doAround(ApiOperationLogAspect.java:54) ~[classes/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:649) ~[spring-aop-6.2.14.jar:6.2.14]
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:631) ~[spring-aop-6.2.14.jar:6.2.14]
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:71) ~[spring-aop-6.2.14.jar:6.2.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:173) ~[spring-aop-6.2.14.jar:6.2.14]
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[spring-aop-6.2.14.jar:6.2.14]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.14.jar:6.2.14]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728) ~[spring-aop-6.2.14.jar:6.2.14]
+	at com.lqf.seckill.user.controller.UserController$$SpringCGLIB$$0.login(<generated>) ~[classes/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258) ~[spring-web-6.2.14.jar:6.2.14]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191) ~[spring-web-6.2.14.jar:6.2.14]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.2.14.jar:6.2.14]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:991) ~[spring-webmvc-6.2.14.jar:6.2.14]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:896) ~[spring-webmvc-6.2.14.jar:6.2.14]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.2.14.jar:6.2.14]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.2.14.jar:6.2.14]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.2.14.jar:6.2.14]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.2.14.jar:6.2.14]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.2.14.jar:6.2.14]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.49.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.2.14.jar:6.2.14]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.49.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.49.jar:10.1.49]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at cn.dev33.satoken.filter.SaFirewallCheckFilterForJakartaServlet.doFilter(SaFirewallCheckFilterForJakartaServlet.java:69) ~[sa-token-spring-boot-webmvc-v3v4-common-1.45.0.jar:?]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at cn.dev33.satoken.filter.SaTokenCorsFilterForJakartaServlet.doFilter(SaTokenCorsFilterForJakartaServlet.java:52) ~[sa-token-spring-boot-webmvc-v3v4-common-1.45.0.jar:?]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at cn.dev33.satoken.filter.SaTokenContextFilterForJakartaServlet.doFilter(SaTokenContextFilterForJakartaServlet.java:40) ~[sa-token-spring-boot-webmvc-v3v4-common-1.45.0.jar:?]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.2.14.jar:6.2.14]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.14.jar:6.2.14]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.2.14.jar:6.2.14]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.14.jar:6.2.14]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.2.14.jar:6.2.14]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.2.14.jar:6.2.14]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:162) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:138) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:88) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:399) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1774) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:973) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:491) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.49.jar:10.1.49]
+	at java.base/java.lang.Thread.run(Thread.java:1583) [?:?]
+2026-04-14 16:34:30.261 INFO  [SpringApplicationShutdownHook] o.s.b.w.e.t.GracefulShutdown : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-14 16:34:30.277 INFO  [tomcat-shutdown] o.s.b.w.e.t.GracefulShutdown : Graceful shutdown complete
+2026-04-14 16:34:43.418 INFO  [background-preinit] o.h.v.i.u.Version : HV000001: Hibernate Validator 8.0.3.Final
+2026-04-14 16:34:43.524 INFO  [main] c.l.s.a.SeckillApplication : Starting SeckillApplication using Java 21.0.10 with PID 5700 (D:\WorkSpace\IdeaWorkSpace\lifang-seckill\lifang-seckill-app\target\classes started by SXCRCJ in D:\WorkSpace\IdeaWorkSpace\lifang-seckill)
+2026-04-14 16:34:43.526 INFO  [main] c.l.s.a.SeckillApplication : The following 1 profile is active: "dev"
+2026-04-14 16:34:45.923 INFO  [main] o.s.b.w.e.t.TomcatWebServer : Tomcat initialized with port 8080 (http)
+2026-04-14 16:34:45.950 INFO  [main] o.a.c.h.Http11NioProtocol : Initializing ProtocolHandler ["http-nio-8080"]
+2026-04-14 16:34:45.952 INFO  [main] o.a.c.c.StandardService : Starting service [Tomcat]
+2026-04-14 16:34:45.953 INFO  [main] o.a.c.c.StandardEngine : Starting Servlet engine: [Apache Tomcat/10.1.49]
+2026-04-14 16:34:46.031 INFO  [main] o.a.c.c.C.[.[.[/] : Initializing Spring embedded WebApplicationContext
+2026-04-14 16:34:46.032 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2404 ms
+2026-04-14 16:34:47.524 INFO  [main] o.a.c.h.Http11NioProtocol : Starting ProtocolHandler ["http-nio-8080"]
+2026-04-14 16:34:47.579 INFO  [main] o.s.b.w.e.t.TomcatWebServer : Tomcat started on port 8080 (http) with context path '/'
+2026-04-14 16:34:47.591 INFO  [main] c.l.s.a.SeckillApplication : Started SeckillApplication in 5.363 seconds (process running for 11.005)
+2026-04-14 16:34:58.262 INFO  [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/] : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-14 16:34:58.262 INFO  [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2026-04-14 16:34:58.264 INFO  [http-nio-8080-exec-1] o.s.w.s.DispatcherServlet : Completed initialization in 2 ms
+2026-04-14 16:34:59.063 INFO  [http-nio-8080-exec-1] c.l.s.c.a.ApiOperationLogAspect : ====== 请求开始: [用户登录], 入参: {"mobile":"15149845307","type":1,"password":"123456","verifyCode":null}, 请求类: UserController, 请求方法: login =================================== 
+2026-04-14 16:34:59.132 INFO  [http-nio-8080-exec-1] c.z.h.HikariDataSource : SeckillHikariPool - Starting...
+2026-04-14 16:34:59.730 INFO  [http-nio-8080-exec-1] c.z.h.p.HikariPool : SeckillHikariPool - Added connection com.mysql.cj.jdbc.ConnectionImpl@128e71d8
+2026-04-14 16:34:59.735 INFO  [http-nio-8080-exec-1] c.z.h.HikariDataSource : SeckillHikariPool - Start completed.
+2026-04-14 16:34:59.907 WARN  [http-nio-8080-exec-1] o.s.s.c.b.BCryptPasswordEncoder : Encoded password does not look like BCrypt
+2026-04-14 16:34:59.914 WARN  [http-nio-8080-exec-1] c.l.s.c.e.GloBalExceptionHandler : /user/login request fail, errorCode: 20004, errorMessage: 密码错误
+2026-04-14 16:35:14.901 INFO  [http-nio-8080-exec-2] c.l.s.c.a.ApiOperationLogAspect : ====== 请求开始: [用户登录], 入参: {"mobile":"13394868288","type":1,"password":"123456","verifyCode":null}, 请求类: UserController, 请求方法: login =================================== 
+2026-04-14 16:35:15.009 INFO  [http-nio-8080-exec-2] c.l.s.u.s.i.UserServiceImpl : ==> 用户登录成功, userID: 2, mobile: 13394868288
+2026-04-14 16:35:15.022 INFO  [http-nio-8080-exec-2] c.l.s.c.a.ApiOperationLogAspect : ====== 请求结束: [用户登录], 耗时: 113ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"token":"f51feebc-e289-427b-8957-3db33f86c27a","userInfo":{"id":2,"nickname":"用户530865","avatar":null}}} =================================== 
+2026-04-14 16:35:33.418 INFO  [http-nio-8080-exec-3] c.l.s.a.c.TestController : ==> 当前已登录, userId: 2
+2026-04-14 16:35:57.709 INFO  [http-nio-8080-exec-4] c.l.s.c.a.ApiOperationLogAspect : ====== 请求开始: [用户登录], 入参: {"mobile":"13394868288","type":2,"password":null,"verifyCode":"123456"}, 请求类: UserController, 请求方法: login =================================== 
+2026-04-14 16:35:57.797 INFO  [http-nio-8080-exec-4] c.l.s.u.s.i.UserServiceImpl : ==> 用户登录成功, userID: 2, mobile: 13394868288
+2026-04-14 16:35:57.797 INFO  [http-nio-8080-exec-4] c.l.s.c.a.ApiOperationLogAspect : ====== 请求结束: [用户登录], 耗时: 93ms, 出参: {"success":true,"message":null,"errorCode":null,"data":{"token":"f51feebc-e289-427b-8957-3db33f86c27a","userInfo":{"id":2,"nickname":"用户530865","avatar":null}}} =================================== 
+2026-04-14 16:36:19.636 INFO  [http-nio-8080-exec-6] c.l.s.c.a.ApiOperationLogAspect : ====== 请求开始: [用户登录], 入参: {"mobile":"13394868200","type":2,"password":null,"verifyCode":"123456"}, 请求类: UserController, 请求方法: login =================================== 
+2026-04-14 16:36:19.690 WARN  [http-nio-8080-exec-6] c.l.s.c.e.GloBalExceptionHandler : /user/login request fail, errorCode: 20003, errorMessage: 该手机号未注册
+2026-04-14 16:36:41.689 INFO  [SpringApplicationShutdownHook] o.s.b.w.e.t.GracefulShutdown : Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-14 16:36:41.737 INFO  [tomcat-shutdown] o.s.b.w.e.t.GracefulShutdown : Graceful shutdown complete
+2026-04-14 16:36:41.812 INFO  [SpringApplicationShutdownHook] c.z.h.HikariDataSource : SeckillHikariPool - Shutdown initiated...
+2026-04-14 16:36:41.980 INFO  [SpringApplicationShutdownHook] c.z.h.HikariDataSource : SeckillHikariPool - Shutdown completed.

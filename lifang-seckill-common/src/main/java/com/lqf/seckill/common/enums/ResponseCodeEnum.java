@@ -1,0 +1,26 @@
+package com.lqf.seckill.common.enums;
+
+import com.lqf.seckill.common.exception.BaseExceptionInterface;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+
+@Getter
+@AllArgsConstructor
+public enum ResponseCodeEnum implements BaseExceptionInterface {
+    // ----------- 通用异常状态码 -----------
+    SYSTEM_ERROR("10000", "出错啦，后台小哥正在努力修复中..."),
+    PARAM_NOT_VALID("10001", "参数错误"),
+
+    // ----------- 业务异常状态码 -----------
+    USER_MOBILE_EXISTS("20001", "该手机号已注册"),
+    USER_VERIFY_CODE_ERROR("20002", "验证码错误"),
+    USER_MOBILE_NOT_REGISTERED("20003", "该手机号未注册"),
+    USER_PASSWORD_ERROR("20004", "密码错误"),
+    USER_STATUS_DISABLED("20005", "账号已被禁用，请联系管理员"),
+
+    ;
+
+    private final String errorCode;
+    private final String errorMessage;
+}
