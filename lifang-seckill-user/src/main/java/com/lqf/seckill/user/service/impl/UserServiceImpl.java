@@ -10,16 +10,23 @@ import com.lqf.seckill.common.exception.BizException;
 import com.lqf.seckill.common.utils.Response;
 import com.lqf.seckill.user.enums.LoginTypeEnum;
 import com.lqf.seckill.user.enums.UserStatusEnum;
+import com.lqf.seckill.user.enums.VerifyCodeTypeEnum;
 import com.lqf.seckill.user.model.vo.LoginUserReqVO;
 import com.lqf.seckill.user.model.vo.LoginUserRspVO;
 import com.lqf.seckill.user.model.vo.RegisterUserReqVO;
+import com.lqf.seckill.user.model.vo.SendVerifyCodeReqVO;
 import com.lqf.seckill.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -27,6 +34,77 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
 
     private final UserDOMapper userDOMapper;
+    private final RedisTemplate<String, Object> redisTemplate;
+    private final Executor bizExecutor;
+
+    // Redis 中验证码的 Key 前缀
+    private static final String VERIFY_CODE_KEY_PREFIX = "verify_code:";
+    // Redis 中发送频率限制的 Key 前缀
+    private static final String VERIFY_CODE_LIMIT_KEY_PREFIX = "verify_code_limit:";
+    // 验证码过期时间（分钟）
+    private static final Long VERIFY_CODE_EXPIRE_MINUTES = 5L;
+    // 发送频率限制时间（秒）
+    private static final Long VERIFY_CODE_LIMIT_SECONDS = 60L;
+
+    /**
+     * 发送验证码
+     * @param sendVerifyCodeReqVO
+     * @return
+     */
+    @Override
+    public Response<?> sendVerifyCode(SendVerifyCodeReqVO sendVerifyCodeReqVO) {
+        Integer type = sendVerifyCodeReqVO.getType();
+        String mobile = sendVerifyCodeReqVO.getMobile();
+
+        // 判断验证码是否合法
+        VerifyCodeTypeEnum verifyCodeTypeEnum = VerifyCodeTypeEnum.valueOf(type);
+        if (Objects.isNull(verifyCodeTypeEnum)) {
+            throw new BizException(ResponseCodeEnum.VERIFY_CODE_TYPE_ERROR);
+        }
+
+        // 发送频率限制：检查是否在60秒内重复发送
+        String limitKey = VERIFY_CODE_LIMIT_KEY_PREFIX + verifyCodeTypeEnum.getPurpose() + ":" + mobile;
+        if (redisTemplate.hasKey(limitKey)) {
+            throw new BizException(ResponseCodeEnum.VERIFY_CODE_SEND_TOO_FREQUENT);
+        }
+
+        // 生成6位数随机验证码
+        String verifyCode = RandomUtil.randomNumbers(6);
+
+        // 通过Pipeline通道，批量写入Redis（频率限制Key + 验证码），减少网络往返，降低失败风险
+        String redisKey = VERIFY_CODE_KEY_PREFIX + verifyCodeTypeEnum.getPurpose() + ":" + mobile;
+        redisTemplate.executePipelined(new SessionCallback<Void>(){
+            @Override
+            public Void execute(RedisOperations operations) {
+                // 先写频率限制 Key（60 秒 TTL）
+                operations.opsForValue().set(limitKey, "1", VERIFY_CODE_LIMIT_SECONDS, TimeUnit.SECONDS);
+                // 再写验证码 Key（5 分钟 TTL）
+                operations.opsForValue().set(redisKey, verifyCode, VERIFY_CODE_EXPIRE_MINUTES, TimeUnit.MINUTES);
+                return null;
+            }
+        });
+
+        // 异步发送短信验证码
+        bizExecutor.execute(() -> {sendSms(mobile, verifyCode);});
+        return Response.success();
+    }
+
+    /**
+     * 发送短信验证码（异步执行，由线程池调度）
+     *
+     * @param mobile     手机号
+     * @param verifyCode 验证码
+     */
+    private void sendSms(String mobile, String verifyCode) {
+        try {
+            // TODO: 调用短信服务商 API 发送验证码
+
+            // 开发阶段通过日志打印验证码，方便调试
+            log.info("==> 验证码发送成功, mobile: {}, verifyCode: {}", mobile, verifyCode);
+        } catch (Exception e) {
+            log.error("==> 验证码发送失败, mobile: {}, verifyCode: {}", mobile, verifyCode, e);
+        }
+    }
 
     /**
      * 用户注册

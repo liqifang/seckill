@@ -5,6 +5,7 @@ import com.lqf.seckill.common.utils.Response;
 import com.lqf.seckill.user.model.vo.LoginUserReqVO;
 import com.lqf.seckill.user.model.vo.LoginUserRspVO;
 import com.lqf.seckill.user.model.vo.RegisterUserReqVO;
+import com.lqf.seckill.user.model.vo.SendVerifyCodeReqVO;
 import com.lqf.seckill.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,5 +39,14 @@ public class UserController {
     @ApiOperationLog("用户登录")
     public Response<LoginUserRspVO> login(@Validated @RequestBody LoginUserReqVO loginUserReqVO) {
         return userService.login(loginUserReqVO);
+    }
+
+    /**
+     * 发送验证码
+     */
+    @PostMapping("/code/send")
+    @ApiOperationLog("发送验证码")
+    public Response<?> sendVerifyCode(@Validated @RequestBody SendVerifyCodeReqVO sendVerifyCodeReqVO) {
+        return userService.sendVerifyCode(sendVerifyCodeReqVO);
     }
 }

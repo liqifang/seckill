@@ -4,6 +4,7 @@ import com.lqf.seckill.common.utils.Response;
 import com.lqf.seckill.user.model.vo.LoginUserReqVO;
 import com.lqf.seckill.user.model.vo.LoginUserRspVO;
 import com.lqf.seckill.user.model.vo.RegisterUserReqVO;
+import com.lqf.seckill.user.model.vo.SendVerifyCodeReqVO;
 
 public interface UserService {
     /**
@@ -19,5 +20,12 @@ public interface UserService {
      * @return
      */
     Response<LoginUserRspVO> login(LoginUserReqVO loginUserReqVO);
+
+    /**
+     * 发送验证码
+     * @param sendVerifyCodeReqVO
+     * @return
+     */
+    Response<?> sendVerifyCode(SendVerifyCodeReqVO sendVerifyCodeReqVO);
 
 }
