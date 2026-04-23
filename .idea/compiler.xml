@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+      </profile>
+      <profile name="Annotation profile for lifang-seckill" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$PROJECT_DIR$/../../MavenRepo/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        </processorPath>
+        <module name="lifang-seckill-goods" />
+        <module name="lifang-seckill-app" />
+        <module name="lifang-seckill-order" />
+        <module name="lifang-seckill-user" />
+        <module name="lifang-seckill-common" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="lifang-seckill-app" options="-parameters" />
+      <module name="lifang-seckill-common" options="-parameters" />
+      <module name="lifang-seckill-goods" options="-parameters" />
+      <module name="lifang-seckill-order" options="-parameters" />
+      <module name="lifang-seckill-user" options="-parameters" />
+    </option>
+  </component>
+</project>
