@@ -9,7 +9,6 @@
 /dataSources/
 /dataSources.local.xml
 
-/logs
-*.log
-
+logs/
+**/target/
 
