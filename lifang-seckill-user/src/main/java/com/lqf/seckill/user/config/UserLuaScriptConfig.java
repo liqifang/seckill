@@ -22,4 +22,16 @@ public class UserLuaScriptConfig {
         script.setResultType(Long.class);
         return script;
     }
+
+    /**
+     * 检查登录失败次数并累加
+     * @return
+     */
+    @Bean
+    public DefaultRedisScript<Long> checkAndIncrementLoginFailScript() {
+        DefaultRedisScript<Long> script = new DefaultRedisScript<>();
+        script.setLocation(new ClassPathResource("lua/check_and_increment_login_fail_count.lua"));
+        script.setResultType(Long.class);
+        return script;
+    }
 }

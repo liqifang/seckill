@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,8 +42,10 @@ public class UserServiceImpl implements UserService {
 
     private final UserDOMapper userDOMapper;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final StringRedisTemplate stringRedisTemplate;
     private final Executor bizExecutor;
     private final DefaultRedisScript<Long> checkAndDelVerifyCodeScript;
+    private final DefaultRedisScript<Long> checkAndIncrementLoginFailScript;
 
     // Redis 中验证码的 Key 前缀
     private static final String VERIFY_CODE_KEY_PREFIX = "verify_code:";
@@ -62,9 +65,12 @@ public class UserServiceImpl implements UserService {
     private static final Integer LOGIN_FAIL_MAX_COUNT = 5;
     // 账号临时锁定时间（分钟）
     private static final Long LOGIN_LOCK_MINUTES = 30L;
+    // BCrypt 密码编码器
+    private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+
 
     /**
-     * 累加登录失败次数
+     * 累加登录失败次数（Lua 脚本原子操作）
      *
      * @param mobile 手机号
      */
@@ -72,14 +78,18 @@ public class UserServiceImpl implements UserService {
         // 构建 Redis Key
         String failCountKey = LOGIN_FAIL_COUNT_KEY_PREFIX + mobile;
 
-        // 查询 Redis 缓存中登录失败次数
-        Long failCount = redisTemplate.opsForValue().increment(failCountKey);
+        // 执行 Lua 脚本：原子性地检查失败次数并累加（超限返回 -1; 未超限返回累加后的值）
+        Long result = stringRedisTemplate.execute(checkAndIncrementLoginFailScript,
+                Collections.singletonList(failCountKey),
+                String.valueOf(LOGIN_FAIL_MAX_COUNT),
+                String.valueOf(LOGIN_LOCK_MINUTES * 60));
 
-        // 如果是第一次添加缓存，需要设置过期时间（锁定窗口）
-        if (Objects.nonNull(failCount) && failCount == 1) {
-            redisTemplate.expire(failCountKey, LOGIN_LOCK_MINUTES, TimeUnit.MINUTES);
+        // 失败次数已达上限，直接拒绝
+        if (Objects.nonNull(result) && result == -1) {
+            throw new BizException(ResponseCodeEnum.LOGIN_FAIL_TOO_MANY);
         }
     }
+
 
     /**
      * 检查登录失败次数是否超限
@@ -206,8 +216,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 3. 密码加密（使用 BCrypt 算法）
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(password);
+        String encodedPassword = PASSWORD_ENCODER.encode(password);
 
         // 4. 构建用户实体，插入数据库
         UserDO userDO = UserDO.builder()
@@ -292,9 +301,8 @@ public class UserServiceImpl implements UserService {
             throw new BizException(ResponseCodeEnum.USER_PASSWORD_ERROR);
         }
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         // 使用 BCrypt 校验明文密码和密文密码是否匹配
-        boolean matches = passwordEncoder.matches(rawPassword, encodedPassword);
+        boolean matches = PASSWORD_ENCODER.matches(rawPassword, encodedPassword);
 
         if (!matches) {
             // 登录失败次数 +1
