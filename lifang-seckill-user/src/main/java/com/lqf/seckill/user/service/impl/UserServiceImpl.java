@@ -42,8 +42,10 @@ public class UserServiceImpl implements UserService {
     private final UserDOMapper userDOMapper;
     private final StringRedisTemplate stringRedisTemplate;
     private final Executor bizExecutor;
+
     private final DefaultRedisScript<Long> checkAndDelVerifyCodeScript;
     private final DefaultRedisScript<Long> checkAndIncrementLoginFailScript;
+    private final DefaultRedisScript<Long> checkAndIncrementVerifyCodeDailyLimitScript;
 
     // Redis 中验证码的 Key 前缀
     private static final String VERIFY_CODE_KEY_PREFIX = "verify_code:";
@@ -154,23 +156,20 @@ public class UserServiceImpl implements UserService {
         String dailyLimitKey = VERIFY_CODE_DAILY_LIMIT_KEY_PREFIX + verifyCodeTypeEnum.getPurpose()
                 + ":" + mobile + ":" + LocalDate.now();
 
-        // 发送次数 +1
-        Long dailyCount = stringRedisTemplate.opsForValue().increment(dailyLimitKey);
+        // 计算从当前时间，到第二天凌晨零点之间还剩下多少秒
+        long secondsUntilMidnight = Duration.between(
+                LocalDateTime.now(),
+                LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT)
+        ).getSeconds();
 
-        // 首次设置缓存时，计算到当天结束的剩余秒数，作为 Key 的 TTL 过期时间
-        if (Objects.nonNull(dailyCount) && dailyCount == 1) {
-            // 计算从当前时间，到第二天凌晨零点之间还剩下多少秒
-            long secondsUntilMidnight = Duration.between(
-                    LocalDateTime.now(),
-                    LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT)
-            ).getSeconds();
-
-            // 设置过期时间
-            stringRedisTemplate.expire(dailyLimitKey, secondsUntilMidnight, TimeUnit.SECONDS);
-        }
+        // 执行 Lua 脚本：原子性地检查每日发送次数并累加
+        Long dailyCount = stringRedisTemplate.execute(checkAndIncrementVerifyCodeDailyLimitScript,
+                Collections.singletonList(dailyLimitKey),
+                String.valueOf(VERIFY_CODE_DAILY_LIMIT),
+                String.valueOf(secondsUntilMidnight));
 
         // 如果已经超过 10 条，抛出业务异常
-        if (Objects.nonNull(dailyCount) && dailyCount > VERIFY_CODE_DAILY_LIMIT) {
+        if (Objects.nonNull(dailyCount) && dailyCount == -1) {
             throw new BizException(ResponseCodeEnum.VERIFY_CODE_DAILY_LIMIT_EXCEEDED);
         }
 

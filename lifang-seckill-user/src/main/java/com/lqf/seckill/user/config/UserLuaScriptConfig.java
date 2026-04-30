@@ -34,4 +34,16 @@ public class UserLuaScriptConfig {
         script.setResultType(Long.class);
         return script;
     }
+
+    /**
+     * 检查每日验证码发送次数并累加
+     * @return 如果已达上限，返回 -1；如果未达上限，累加发送次数，并返回累加后的值
+     */
+    @Bean
+    public DefaultRedisScript<Long> checkAndIncrementVerifyCodeDailyLimitScript() {
+        DefaultRedisScript<Long> script = new DefaultRedisScript<>();
+        script.setLocation(new ClassPathResource("lua/check_and_increment_verify_code_daily_limit.lua"));
+        script.setResultType(Long.class);
+        return script;
+    }
 }
