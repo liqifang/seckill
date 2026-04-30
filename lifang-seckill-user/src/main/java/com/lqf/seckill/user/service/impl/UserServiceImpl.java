@@ -18,8 +18,6 @@ import com.lqf.seckill.user.model.vo.SendVerifyCodeReqVO;
 import com.lqf.seckill.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisOperations;
-import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -146,9 +144,14 @@ public class UserServiceImpl implements UserService {
             throw new BizException(ResponseCodeEnum.VERIFY_CODE_TYPE_ERROR);
         }
 
-        // 发送频率限制：检查是否在60秒内重复发送
+        // 发送频率限制：检查是否在 60 秒内重复发送
         String limitKey = VERIFY_CODE_LIMIT_KEY_PREFIX + verifyCodeTypeEnum.getPurpose() + ":" + mobile;
-        if (stringRedisTemplate.hasKey(limitKey)) {
+
+        // 如果 Key 已存在（60 秒内已发送过），返回 false；不存在则创建 Key 并返回 true
+        Boolean absent = stringRedisTemplate.opsForValue()
+                .setIfAbsent(limitKey, "1", VERIFY_CODE_LIMIT_SECONDS, TimeUnit.SECONDS);
+
+        if (Boolean.FALSE.equals(absent)) {
             throw new BizException(ResponseCodeEnum.VERIFY_CODE_SEND_TOO_FREQUENT);
         }
 
@@ -176,18 +179,11 @@ public class UserServiceImpl implements UserService {
         // 生成6位数随机验证码
         String verifyCode = RandomUtil.randomNumbers(6);
 
-        // 通过Pipeline通道，批量写入Redis（频率限制Key + 验证码），减少网络往返，降低失败风险
+        // 构建验证码 Redis Key
         String redisKey = VERIFY_CODE_KEY_PREFIX + verifyCodeTypeEnum.getPurpose() + ":" + mobile;
-        stringRedisTemplate.executePipelined(new SessionCallback<Void>(){
-            @Override
-            public Void execute(RedisOperations operations) {
-                // 先写频率限制 Key（60 秒 TTL）
-                operations.opsForValue().set(limitKey, "1", VERIFY_CODE_LIMIT_SECONDS, TimeUnit.SECONDS);
-                // 再写验证码 Key（5 分钟 TTL）
-                operations.opsForValue().set(redisKey, verifyCode, VERIFY_CODE_EXPIRE_MINUTES, TimeUnit.MINUTES);
-                return null;
-            }
-        });
+
+        // 缓存验证码（5 分钟 TTL）
+        stringRedisTemplate.opsForValue().set(redisKey, verifyCode, VERIFY_CODE_EXPIRE_MINUTES, TimeUnit.MINUTES);
 
         // 异步发送短信验证码
         bizExecutor.execute(() -> {sendSms(mobile, verifyCode);});
