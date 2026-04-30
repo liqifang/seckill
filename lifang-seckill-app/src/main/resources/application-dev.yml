@@ -4,11 +4,11 @@ server:
 spring:
   # 本地开发环境 MySQL 数据源配置
   datasource:
-    # 连接地址：数据库名为 xiaoha_seckill（1.1 小节中创建的）
+    # 连接地址
     url: jdbc:mysql://localhost:3307/lifang-seckill?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
     # 数据库用户名
     username: root
-    # 数据库密码（改成你自己的密码）
+    # 数据库密码
     password: 123456
     # 数据库驱动类名
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -73,6 +73,8 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: true
+  # token 前缀
+  token-prefix: Bearer
 
 # 自定义线程池配置
 thread-pool:

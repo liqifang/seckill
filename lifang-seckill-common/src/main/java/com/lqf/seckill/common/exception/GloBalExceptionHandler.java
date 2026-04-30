@@ -1,5 +1,6 @@
 package com.lqf.seckill.common.exception;
 
+import cn.dev33.satoken.exception.NotLoginException;
 import com.lqf.seckill.common.enums.ResponseCodeEnum;
 import com.lqf.seckill.common.utils.Response;
 import jakarta.servlet.http.HttpServletRequest;
@@ -70,5 +71,15 @@ public class GloBalExceptionHandler {
     public Response<Object> handleOtherException(HttpServletRequest request, Exception e) {
         log.error("{} request error, ", request.getRequestURI(), e);
         return Response.fail(ResponseCodeEnum.SYSTEM_ERROR);
+    }
+
+    /**
+     * 捕获 SaToken 未登录异常
+     * @return
+     */
+    @ExceptionHandler({ NotLoginException.class })
+    public Response<Object> handleNotLoginException(HttpServletRequest request, NotLoginException e) {
+        log.warn("{} request fail, 未登录异常: {}", request.getRequestURI(), e.getMessage());
+        return Response.fail(ResponseCodeEnum.UNAUTHORIZED);
     }
 }
