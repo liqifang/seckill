@@ -1,5 +1,7 @@
 package com.lqf.seckill.user.service.impl;
 
+import cloud.tianai.captcha.application.ImageCaptchaApplication;
+import cloud.tianai.captcha.spring.plugins.secondary.SecondaryVerificationApplication;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -40,6 +42,7 @@ public class UserServiceImpl implements UserService {
     private final UserDOMapper userDOMapper;
     private final StringRedisTemplate stringRedisTemplate;
     private final Executor bizExecutor;
+    private final ImageCaptchaApplication imageCaptchaApplication;
 
     private final DefaultRedisScript<Long> checkAndDelVerifyCodeScript;
     private final DefaultRedisScript<Long> checkAndIncrementLoginFailScript;
@@ -138,7 +141,22 @@ public class UserServiceImpl implements UserService {
         Integer type = sendVerifyCodeReqVO.getType();
         String mobile = sendVerifyCodeReqVO.getMobile();
 
-        // 判断验证码是否合法
+        // 行为验证码二次校验
+        String captchaId = sendVerifyCodeReqVO.getCaptchaId();
+        if (StrUtil.isBlank(captchaId)) {
+            throw new BizException(ResponseCodeEnum.CAPTCHA_VERIFICATION_FAILED);
+        }
+
+        // 判断 ImageCaptchaApplication 是否支持二次校验
+        boolean verified = false;
+        if (imageCaptchaApplication instanceof SecondaryVerificationApplication) {
+            verified = ((SecondaryVerificationApplication) imageCaptchaApplication).secondaryVerification(captchaId);
+        }
+        if (!verified) {
+            throw new BizException(ResponseCodeEnum.CAPTCHA_VERIFICATION_FAILED);
+        }
+
+        // 判断验证码类型是否合法
         VerifyCodeTypeEnum verifyCodeTypeEnum = VerifyCodeTypeEnum.valueOf(type);
         if (Objects.isNull(verifyCodeTypeEnum)) {
             throw new BizException(ResponseCodeEnum.VERIFY_CODE_TYPE_ERROR);
