@@ -26,7 +26,6 @@ public class CaptchaController {
 
     /**
      * 生成行为验证码接口
-     *
      * @param type 验证码类型（SLIDER-滑块、ROTATE-旋转、CONCAT-滑动还原、WORD_IMAGE_CLICK-文字点选、RANDOM-随机），可选参数
      * @return 验证码数据（包含背景图、模板图、验证码 ID 等）
      */
@@ -70,7 +69,6 @@ public class CaptchaController {
 
     /**
      * 校验行为验证码接口
-     *
      * @param data 包含验证码 ID 和用户滑动轨迹数据
      * @return 校验结果
      */

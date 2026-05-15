@@ -7,13 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FindSeckillGoodsListRspVO {
+public class FindSeckillGoodsDetailRspVO {
 
+    /**
+     * 秒杀商品关联表 ID
+     */
     private Long id;
 
     /**
@@ -22,24 +26,29 @@ public class FindSeckillGoodsListRspVO {
     private Long goodsId;
 
     /**
-     * 商品原价
-     */
-    private BigDecimal goodsPrice;
-
-    /**
      * 活动 ID
      */
     private Long activityId;
 
     /**
-     * 秒杀商品名称
+     * 商品名称
      */
-    private String seckillTitle;
+    private String goodsName;
 
     /**
-     * 秒杀商品图片
+     * 商品原价
      */
-    private String seckillImg;
+    private BigDecimal goodsPrice;
+
+    /**
+     * 商品轮播图列表
+     */
+    private List<String> goodsImgs;
+
+    /**
+     * 商品详情（HTML 内容）
+     */
+    private String goodsDetail;
 
     /**
      * 秒杀价

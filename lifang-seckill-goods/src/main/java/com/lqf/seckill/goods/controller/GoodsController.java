@@ -2,6 +2,8 @@ package com.lqf.seckill.goods.controller;
 
 import com.lqf.seckill.common.aspect.ApiOperationLog;
 import com.lqf.seckill.common.utils.Response;
+import com.lqf.seckill.goods.model.vo.FindSeckillGoodsDetailReqVO;
+import com.lqf.seckill.goods.model.vo.FindSeckillGoodsDetailRspVO;
 import com.lqf.seckill.goods.model.vo.FindSeckillGoodsListReqVO;
 import com.lqf.seckill.goods.model.vo.FindSeckillGoodsListRspVO;
 import com.lqf.seckill.goods.service.GoodsService;
@@ -33,5 +35,11 @@ public class GoodsController {
     @ApiOperationLog("查询秒杀商品列表")
     public Response<List<FindSeckillGoodsListRspVO>> getSeckillGoodsList(@RequestBody @Validated FindSeckillGoodsListReqVO reqVO) {
         return goodsService.findSeckillGoodsList(reqVO);
+    }
+
+    @PostMapping("/detail")
+    @ApiOperationLog("查询秒杀商品详情")
+    public Response<FindSeckillGoodsDetailRspVO> getSeckillGoodsDetail(@RequestBody @Validated FindSeckillGoodsDetailReqVO reqVO) {
+        return goodsService.findSeckillGoodsDetail(reqVO);
     }
 }
