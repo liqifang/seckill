@@ -33,6 +33,14 @@ public interface SeckillGoodsDOMapper {
                                                 @Param("goodsId") Long goodsId);
 
     /**
+     * 根据活动 ID 查询秒杀商品的库存（仅查询 id 和 seckill_stock 字段）
+     *
+     * @param activityId
+     * @return
+     */
+    List<SeckillGoodsDO> selectStockByActivityId(@Param("activityId") Long activityId);
+
+    /**
      * 扣减秒杀库存
      *
      * @param id 秒杀商品关联表主键 ID

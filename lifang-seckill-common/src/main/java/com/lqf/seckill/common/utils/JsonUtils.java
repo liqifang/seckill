@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.SneakyThrows;
 
+import java.util.List;
+
 public class JsonUtils {
 
     private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -33,6 +35,20 @@ public class JsonUtils {
     @SneakyThrows
     public static String toJsonString(Object obj) {
         return OBJECT_MAPPER.writeValueAsString(obj);
+    }
+
+    /**
+     * 将 JSON 字符串转换为指定类型的集合
+     *
+     * @param json
+     * @param clazz
+     * @return List<T>
+     * @param <T>
+     */
+    @SneakyThrows
+    public static <T> List<T> parseArray(String json, Class<T> clazz) {
+        return OBJECT_MAPPER.readValue(json,
+                OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
     }
 
 }
