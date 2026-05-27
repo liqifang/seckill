@@ -198,6 +198,36 @@ public class GoodsServiceImpl implements GoodsService {
         Long activityId = reqVO.getActivityId();
         log.info("==> 查询秒杀商品详情, goodsId: {}, activityId: {}", goodsId, activityId);
 
+        // 构建 Redis 缓存 Key
+        String redisKey = RedisKeyConstants.GOODS_DETAIL_PREFIX + activityId + ":" + goodsId;
+
+        // 先查 Redis 缓存
+        String redisJsonValue = stringRedisTemplate.opsForValue().get(redisKey);
+
+        // 缓存不为空
+        if (StrUtil.isNotEmpty(redisJsonValue)) {
+            log.info("==> 命中商品详情缓存，redisKey：{}", redisKey);
+
+            // 缓存命中，手动将 String 字符串反序列化为商品详情对象
+            FindSeckillGoodsDetailRspVO cachedDetail = JsonUtils
+                    .parseObject(redisJsonValue, FindSeckillGoodsDetailRspVO.class);
+
+            // 设置库存字段（因为库存值经常变化，需要从数据库取新值）
+            SeckillGoodsDO seckillGoodsDO = seckillGoodsDOMapper.
+                    selectStockByActivityIdAndGoodsId(activityId, goodsId);
+
+            if (Objects.nonNull(seckillGoodsDO)) {
+                cachedDetail.setSeckillStock(seckillGoodsDO.getSeckillStock());
+            }
+
+            // 实时重新计算活动状态
+            ActivityStatusEnum activityStatusEnum = calculateActivityStatus(
+                    cachedDetail.getBeginTime(), cachedDetail.getEndTime());
+            cachedDetail.setActivityStatus(activityStatusEnum.getStatus());
+
+            return Response.success(cachedDetail);
+        }
+
         // 1.根据活动 ID 查询活动信息，校验活动是否存在
         SeckillActivityDO activityDO = seckillActivityDOMapper.selectByPrimaryKey(activityId);
         if (Objects.isNull(activityDO)) {
@@ -253,6 +283,11 @@ public class GoodsServiceImpl implements GoodsService {
         if (Objects.nonNull(goodsDetailDO)) {
             rspVO.setGoodsDetail(goodsDetailDO.getDetailContent());
         }
+
+        // 将商品详情写入 Redis
+        log.info("==> 商品详情缓存未命中，将数据写入 Redis，redisKey: {}", redisKey);
+        stringRedisTemplate.opsForValue().set(redisKey, JsonUtils.toJsonString(rspVO),
+                        RedisKeyConstants.GOODS_DETAIL_TTL_MINUTES, TimeUnit.MINUTES);
 
         return Response.success(rspVO);
 

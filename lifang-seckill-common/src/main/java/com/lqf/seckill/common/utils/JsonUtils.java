@@ -51,4 +51,16 @@ public class JsonUtils {
                 OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
     }
 
+    /**
+     *
+     * 将 JSON 字符串转换为指定类型的对象
+     * @param json
+     * @param clazz
+     * @return
+     * @param <T>
+     */
+    @SneakyThrows
+    public static <T> T parseObject(String json, Class<T> clazz){
+        return OBJECT_MAPPER.readValue(json, clazz);
+    }
 }

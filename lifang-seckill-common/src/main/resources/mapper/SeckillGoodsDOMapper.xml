@@ -52,7 +52,13 @@
         where activity_id = #{activityId,jdbcType=BIGINT}
           and is_deleted = 0
     </select>
-
+    <select id="selectStockByActivityIdAndGoodsId" resultMap="BaseResultMap">
+        select id, seckill_stock
+        from t_seckill_goods
+        where activity_id = #{activityId,jdbcType=BIGINT}
+        and goods_id = #{goodsId,jdbcType=BIGINT}
+        and is_deleted = 0
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete
         from t_seckill_goods
