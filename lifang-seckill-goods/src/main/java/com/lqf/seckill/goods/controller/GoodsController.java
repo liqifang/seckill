@@ -37,6 +37,11 @@ public class GoodsController {
         return goodsService.findSeckillGoodsList(reqVO);
     }
 
+    /**
+     * 查询秒杀商品详情
+     * @param reqVO
+     * @return
+     */
     @PostMapping("/detail")
     @ApiOperationLog("查询秒杀商品详情")
     public Response<FindSeckillGoodsDetailRspVO> getSeckillGoodsDetail(@RequestBody @Validated FindSeckillGoodsDetailReqVO reqVO) {
