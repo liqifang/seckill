@@ -181,6 +181,12 @@ public class GoodsServiceImpl implements GoodsService {
         if (StrUtil.isNotEmpty(redisJsonValue)) {
             log.info("==> 命中商品缓存列表，redisKey:{}", redisKey);
 
+            // 判断缓存是否为空
+            if (Objects.equals(RedisKeyConstants.NULL_CACHE_VALUE, redisJsonValue)) {
+                log.info("==> 命中缓存空值，活动不存在，redisKey:{}", redisKey);
+                throw new BizException(ResponseCodeEnum.SECKILL_ACTIVITY_NOT_EXIST);
+            }
+
             // 手动将字符串反序列化为商品列表
             List<FindSeckillGoodsListRspVO> cachedList = JsonUtils
                     .parseArray(redisJsonValue, FindSeckillGoodsListRspVO.class);
@@ -200,6 +206,9 @@ public class GoodsServiceImpl implements GoodsService {
         // 1.查询活动信息
         SeckillActivityDO activityDO = seckillActivityDOMapper.selectByPrimaryKey(activityId);
         if (Objects.isNull(activityDO)) {
+            // 缓存空值，防止穿透
+            cacheNullValue(redisKey);
+
             throw new BizException(ResponseCodeEnum.SECKILL_ACTIVITY_NOT_EXIST);
         }
 
@@ -267,58 +276,6 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     /**
-     * 实时补充库存字段（库存变化频繁，每次从数据库实时查询）
-     *
-     * @param goodsList  缓存中的商品列表
-     * @param activityId 活动 ID
-     */
-    private void supplementStock(List<FindSeckillGoodsListRspVO> goodsList, Long activityId) {
-        // 根据活动 ID 查询秒杀商品的实时库存（仅查 id 和 seckill_stock 字段，减少 IO 开销）
-        List<SeckillGoodsDO> seckillGoodsDOS = seckillGoodsDOMapper.selectStockByActivityId(activityId);
-
-        // 构建 ID -> 库存的映射
-        Map<Long, Integer> stockMap = seckillGoodsDOS.stream()
-                .collect(Collectors.toMap(SeckillGoodsDO::getId, SeckillGoodsDO::getSeckillStock));
-
-        // 补充库存到缓存中的商品列表
-        for (FindSeckillGoodsListRspVO rspVO : goodsList) {
-            Integer stock = stockMap.get(rspVO.getId());
-            if (Objects.nonNull(stock)) {
-                rspVO.setSeckillStock(stock);
-            }
-        }
-    }
-
-    /**
-     * 根据当前时间动态计算活动状态
-     *
-     * @param activityDO 活动实体
-     * @return 活动状态枚举
-     */
-    private ActivityStatusEnum calculateActivityStatus(SeckillActivityDO activityDO) {
-        return calculateActivityStatus(activityDO.getBeginTime(), activityDO.getEndTime());
-    }
-
-    /**
-     * 根据当前时间动态计算活动状态 (重载方法)
-     *
-     * @param beginTime 开始时间
-     * @param endTime 结束时间
-     * @return 活动状态枚举
-     */
-    private ActivityStatusEnum calculateActivityStatus(LocalDateTime beginTime, LocalDateTime endTime) {
-        LocalDateTime now = LocalDateTime.now();
-        if (now.isBefore(beginTime)) { // 当前时间早于活动开始时间，则活动未开始
-            return ActivityStatusEnum.NOT_STARTED;
-        } else if (now.isAfter(endTime)) { // 当前时间晚于活动结束时间，则活动已结束
-            return ActivityStatusEnum.ENDED;
-        } else { // 活动进行中
-            return ActivityStatusEnum.ING;
-        }
-    }
-
-
-    /**
      * 查询秒杀商品详情
      * @param reqVO 商品 ID，活动 ID
      * @return 秒杀商品详情
@@ -340,6 +297,12 @@ public class GoodsServiceImpl implements GoodsService {
         // 缓存不为空
         if (StrUtil.isNotEmpty(redisJsonValue)) {
             log.info("==> 命中商品详情缓存，redisKey：{}", redisKey);
+
+            // 防止缓存穿透，判断缓存是否是 NULL
+            if (Objects.equals(RedisKeyConstants.NULL_CACHE_VALUE, redisJsonValue)) {
+                log.info("==> 命中空值缓存，商品不存在, redisKey: {}", redisKey);
+                throw new BizException(ResponseCodeEnum.SECKILL_GOODS_NOT_EXIST);
+            }
 
             // 缓存命中，手动将 String 字符串反序列化为商品详情对象
             FindSeckillGoodsDetailRspVO cachedDetail = JsonUtils
@@ -364,12 +327,18 @@ public class GoodsServiceImpl implements GoodsService {
         // 1.根据活动 ID 查询活动信息，校验活动是否存在
         SeckillActivityDO activityDO = seckillActivityDOMapper.selectByPrimaryKey(activityId);
         if (Objects.isNull(activityDO)) {
+            // 缓存空值
+            cacheNullValue(redisKey);
+
             throw new BizException(ResponseCodeEnum.SECKILL_ACTIVITY_NOT_EXIST);
         }
 
         // 2.根据活动 ID 和商品 ID 查询秒杀商品
         SeckillGoodsDO seckillGoodsDO = seckillGoodsDOMapper.selectByActivityIdAndGoodsId(activityId, goodsId);
         if (Objects.isNull(seckillGoodsDO)) {
+            // 缓存空值
+            cacheNullValue(redisKey);
+
             throw new BizException(ResponseCodeEnum.SECKILL_GOODS_NOT_EXIST);
         }
 
@@ -431,9 +400,67 @@ public class GoodsServiceImpl implements GoodsService {
             stringRedisTemplate.opsForValue().set(redisKey, JsonUtils.toJsonString(rspVO),
                     RedisKeyConstants.ENDED_ACTIVITY_TTL_MINUTES, TimeUnit.MINUTES);
         }
-
-
         return Response.success(rspVO);
+    }
 
+    /**
+     * 根据当前时间动态计算活动状态
+     *
+     * @param activityDO 活动实体
+     * @return 活动状态枚举
+     */
+    private ActivityStatusEnum calculateActivityStatus(SeckillActivityDO activityDO) {
+        return calculateActivityStatus(activityDO.getBeginTime(), activityDO.getEndTime());
+    }
+
+    /**
+     * 根据当前时间动态计算活动状态 (重载方法)
+     *
+     * @param beginTime 开始时间
+     * @param endTime 结束时间
+     * @return 活动状态枚举
+     */
+    private ActivityStatusEnum calculateActivityStatus(LocalDateTime beginTime, LocalDateTime endTime) {
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isBefore(beginTime)) { // 当前时间早于活动开始时间，则活动未开始
+            return ActivityStatusEnum.NOT_STARTED;
+        } else if (now.isAfter(endTime)) { // 当前时间晚于活动结束时间，则活动已结束
+            return ActivityStatusEnum.ENDED;
+        } else { // 活动进行中
+            return ActivityStatusEnum.ING;
+        }
+    }
+
+    /**
+     * 实时补充库存字段（库存变化频繁，每次从数据库实时查询）
+     *
+     * @param goodsList  缓存中的商品列表
+     * @param activityId 活动 ID
+     */
+    private void supplementStock(List<FindSeckillGoodsListRspVO> goodsList, Long activityId) {
+        // 根据活动 ID 查询秒杀商品的实时库存（仅查 id 和 seckill_stock 字段，减少 IO 开销）
+        List<SeckillGoodsDO> seckillGoodsDOS = seckillGoodsDOMapper.selectStockByActivityId(activityId);
+
+        // 构建 ID -> 库存的映射
+        Map<Long, Integer> stockMap = seckillGoodsDOS.stream()
+                .collect(Collectors.toMap(SeckillGoodsDO::getId, SeckillGoodsDO::getSeckillStock));
+
+        // 补充库存到缓存中的商品列表
+        for (FindSeckillGoodsListRspVO rspVO : goodsList) {
+            Integer stock = stockMap.get(rspVO.getId());
+            if (Objects.nonNull(stock)) {
+                rspVO.setSeckillStock(stock);
+            }
+        }
+    }
+
+    /**
+     * 缓存空值，防止缓存穿透
+     * @param redisKey Redis Key
+     */
+    private void cacheNullValue(String redisKey) {
+        stringRedisTemplate.opsForValue().set(redisKey, RedisKeyConstants.NULL_CACHE_VALUE,
+                RedisKeyConstants.NULL_CACHE_TTL_MINUTES, TimeUnit.MINUTES);
+        log.info("==> 缓存空值，防止穿透，redisKey: {}, TTL: {}", redisKey, RedisKeyConstants.NULL_CACHE_TTL_MINUTES);
     }
 }
