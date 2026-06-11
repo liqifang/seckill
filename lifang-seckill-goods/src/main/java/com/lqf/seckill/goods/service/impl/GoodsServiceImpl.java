@@ -17,6 +17,8 @@ import com.lqf.seckill.goods.model.vo.FindSeckillGoodsListRspVO;
 import com.lqf.seckill.goods.service.GoodsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RBloomFilter;
+import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,7 @@ public class GoodsServiceImpl implements GoodsService {
     private final GoodsImgDOMapper goodsImgDOMapper;
     private final GoodsDetailDOMapper goodsDetailDOMapper;
     private final StringRedisTemplate stringRedisTemplate;
+    private final RedissonClient redissonClient;
 
     /**
      * 预热指定商品缓存
@@ -67,7 +70,35 @@ public class GoodsServiceImpl implements GoodsService {
             log.info("预热跳过，商品不存在，activityId：{}", activityId);
             throw new BizException(ResponseCodeEnum.SECKILL_ACTIVITY_GOODS_EMPTY);
         }
-
+        
+        // 初始化活动布隆过滤器
+        RBloomFilter<Long> activityBloom = redissonClient.getBloomFilter(RedisKeyConstants.SECKILL_ACTIVITY_BLOOM_KEY);
+        // 初始化之前，如果之前已经创建了，先删除掉
+        activityBloom.delete();
+        // 预期插入一万个活动，误判率为 1%
+        activityBloom.tryInit(10000L, 0.01);
+        // 写入活动 ID
+        activityBloom.add(activityId);
+        // 设置过期时间，防止布隆过滤器一直占用着 Redis 内存
+        redissonClient.getKeys().expire(RedisKeyConstants.SECKILL_ACTIVITY_BLOOM_KEY, 7, TimeUnit.DAYS);
+        
+        log.info("==> 活动布隆过滤器写入成功, activityId: {}", activityId);
+        
+        // 初始化秒杀商品布隆过滤器
+        RBloomFilter<String> goodsBloom = redissonClient.getBloomFilter(RedisKeyConstants.SECKILL_GOODS_BLOOM_KEY);
+        // 初始化之前，如果之前已经创建，则删除
+        goodsBloom.delete();
+        // 预期插入十万个商品，误判率为 1%
+        goodsBloom.tryInit(10000L, 0.01);
+        // 写入所以活动商品
+        seckillGoodsDOS.forEach(goodsDO -> {
+            goodsBloom.add(activityId + ":" + goodsDO.getId());
+        });
+        // 设置过期时间
+        redissonClient.getKeys().expire(RedisKeyConstants.SECKILL_GOODS_BLOOM_KEY, 7, TimeUnit.DAYS);
+        
+        log.info("==> 商品布隆过滤器写入成功, activityId: {}, 商品数: {}", activityId, seckillGoodsDOS.size());
+        
         // 批量查询商品原价
         List<Long> goodIds = seckillGoodsDOS.stream().map(SeckillGoodsDO::getGoodsId).toList();
 
@@ -173,7 +204,16 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 构建 Redis 缓存 Key
         String redisKey = RedisKeyConstants.GOODS_LIST_PREFIX + activityId;
-
+        
+        // 布隆过滤器校验活动是否存在
+        // 如果布隆过滤器返回“不存在”，一定正确，说明该活动 ID 一定不合法，直接拒绝
+        RBloomFilter<Long> activityBloom = redissonClient.getBloomFilter(RedisKeyConstants.SECKILL_ACTIVITY_BLOOM_KEY);
+        
+        if (activityBloom.isExists() && !activityBloom.contains(activityId)) {
+            log.info("==> 布隆过滤器拦截：活动不存在, activityId: {}", activityId);
+            throw new BizException(ResponseCodeEnum.SECKILL_ACTIVITY_NOT_EXIST);
+        }
+        
         // 先查 Redis缓存
         String redisJsonValue = stringRedisTemplate.opsForValue().get(redisKey);
 
@@ -290,7 +330,23 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 构建 Redis 缓存 Key
         String redisKey = RedisKeyConstants.GOODS_DETAIL_PREFIX + activityId + ":" + goodsId;
-
+        
+        // 布隆过滤器校验活动是否存在
+        RBloomFilter<Long> activityBloom = redissonClient.getBloomFilter(RedisKeyConstants.SECKILL_ACTIVITY_BLOOM_KEY);
+        
+        if (activityBloom.isExists() && !activityBloom.contains(activityId)) {
+            log.info("==> 布隆过滤器拦截：活动不存在, activityId: {}", activityId);
+            throw new BizException(ResponseCodeEnum.SECKILL_ACTIVITY_NOT_EXIST);
+        }
+        
+        // 布隆过滤器校验商品是否存在
+        RBloomFilter<String> goodsBloom = redissonClient.getBloomFilter(RedisKeyConstants.SECKILL_GOODS_BLOOM_KEY);
+        
+        if (goodsBloom.isExists() && !goodsBloom.contains(activityId + ":" + goodsId)) {
+            log.info("==> 布隆过滤器拦截：秒杀商品不存在, activityId: {}，goodsId: {}", activityId, goodsId);
+            throw new BizException(ResponseCodeEnum.SECKILL_ACTIVITY_NOT_EXIST);
+        }
+        
         // 先查 Redis 缓存
         String redisJsonValue = stringRedisTemplate.opsForValue().get(redisKey);
 

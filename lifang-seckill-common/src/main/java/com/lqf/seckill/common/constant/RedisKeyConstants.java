@@ -22,7 +22,17 @@ public class RedisKeyConstants {
      * 完整格式：seckill:goods:detail:{activityId}:{goodsId}
      */
     public static final String GOODS_DETAIL_PREFIX = "seckill:goods:detail:";
-
+    
+    /**
+     * 活动布隆过滤器 Key
+     */
+    public static final String SECKILL_ACTIVITY_BLOOM_KEY = "seckill:bloom:activity";
+    
+    /**
+     * 商品布隆过滤器 Key
+     */
+    public static final String SECKILL_GOODS_BLOOM_KEY = "seckill:bloom:goods";
+    
     /**
      * 活动结束后，缓存保留的短过期时间（单位：分钟）
      * 防止活动结束后仍有余温流量，每次都打到 DB
